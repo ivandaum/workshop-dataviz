@@ -19,6 +19,14 @@ var Category = function(param) {
   this.setCirclesStats()
 }
 
+Category.prototype.isActive = function() {
+  if(activeCategory == false) return false
+
+  if(activeCategory.title == this.title) return true
+
+  return false
+}
+
 Category.prototype.setCirclesStats = function() {
   values = []
   this.stats = []

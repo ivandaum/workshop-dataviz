@@ -3,18 +3,22 @@ var Circle = function(param) {
   this.category = param.category
   this.number = param.number
   this.color = param.color
-  this.size = 1
+  this.size = 10
   this.position = {}
   this.initPosition = {}
-  this.sizeRatio = 0.3
+  this.sizeRatio = 2.5
   this.easing = random(0.1,1)
   this.rotate = 0
+  this.initVariation = {x:0,y:0}
+  this.activeVariation = {x:0.1,y:0.1}
   this.progressiveRotate = 10
 }
 
 Circle.prototype.updateWithStats = function() {
     var category = this.category
     this.rayon = globalR / 2
+    this.radius = globalR
+    this.endRadius = this.radius
 
     this.initPosition = circlePoint(globalR,this.number,category.datas.length)
     this.initPosition.x += window.innerWidth / 2
@@ -26,6 +30,8 @@ Circle.prototype.updateWithStats = function() {
       x:random(this.number - this.variationValue, this.number + this.variationValue),
       y:random(this.number - this.variationValue, this.number + this.variationValue)
     }
+
+    this.initVariation = this.variation
 
     if(this.initPosition.x < this.rayon) {
         this.initPosition.x += this.variation.x
@@ -41,14 +47,14 @@ Circle.prototype.updateWithStats = function() {
 
     this.position = this.initPosition
     this.easing = this.size / 100
-    this.size = this.percent * this.sizeRatio
+    this.size *= this.sizeRatio * this.percent / 100
     this.hoverSize = this.size * 2
     this.initSize = this.size
 
 }
 
 Circle.prototype.update = function() {
-  var minimum = 0.3
+  var minimum = 0.1
   this.progressiveRotate += (minimum - this.progressiveRotate ) * this.easing
 
   if(this.progressiveRotate <= minimum) this.progressiveRotate = minimum
@@ -57,7 +63,14 @@ Circle.prototype.update = function() {
 
   if(this.rotate == 360) this.rotate = 0
 
-  var points = circlePoint(globalR,this.rotate,360)
+  if(activeCategory != false) {
+    this.endRadius = activeCategory.title == this.category.title ? activeCategoryR : reductedR
+  } else {
+    this.endRadius = globalR
+  }
+
+  this.radius += (this.endRadius - this.radius) * 0.1
+  var points = circlePoint(this.radius,this.rotate,360)
 
   this.position.x = points.x
   this.position.y = points.y
@@ -65,6 +78,39 @@ Circle.prototype.update = function() {
   this.position.x += window.innerWidth / 2
   this.position.y += window.innerHeight / 2
 
+  if(this.category.isActive() == true) {
+    return this.draw()
+    this.variation.x += (this.activeVariation.x - this.variation.x) * 0.3
+    this.variation.y += (this.activeVariation.x - this.variation.y) * 0.3
+
+    //return this.draw()
+  } else {
+    // this.variation.x += (this.initVariation.x - this.variation.x) * 100
+    // this.variation.y += (this.initVariation.y - this.variation.y) * 100
+    // this.variation.x = this.initVariation.x
+    // this.variation.y = this.initVariation.y
+    //
+    //
+    // if(this.category.title = 'Couleur favorite' && this.number == 2) {
+    //   console.log(this.initVariation)
+    // }
+
+    if(this.variation >= this.initVariation.x) {
+
+    }
+  }
+  // else {
+    //
+    // this.variation.x += this.initVariation.x * 0.3
+    // this.variation.y += this.initVariation.y * 0.3
+    //
+    // if(this.variation >= this.initVariation.x) {
+    //   this.variation.x = this.initVariation.x
+    //   this.variation.y = this.initVariation.y
+    // }
+    //
+    // this.variation = this.initVariation
+  // }
 
   if(this.position.x < this.rayon) {
       this.position.x += this.variation.x

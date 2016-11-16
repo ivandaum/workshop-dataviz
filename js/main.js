@@ -5,10 +5,12 @@ var canvas = app.append('canvas')
 var ctx = canvas.node().getContext('2d')
 var CATEGORIES = []
 var globalR = Math.min(window.innerHeight, window.innerWidth) / 4
-var activeCategoryR = Math.min(window.innerHeight, window.innerWidth) / 7
+var activeCategoryR = Math.min(window.innerHeight, window.innerWidth) / 3
+var reductedR = Math.min(window.innerHeight, window.innerWidth) / 20
 var mouse = {x:0,y:0}
 var ROTATE = 0
 var TIMMING = 0
+var activeCategory = false
 
 window.addEventListener('click',function(e){
     if(e.clientX) {
@@ -17,8 +19,11 @@ window.addEventListener('click',function(e){
     }
     var circle = getCircleOnMouse()
 
-    if(!circle) return
-
+    if(!circle) {
+      activeCategory = false
+    } else {
+      activeCategory = circle.category
+    }
 })
 
 window.addEventListener('mousemove',function(e) {
