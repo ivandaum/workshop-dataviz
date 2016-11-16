@@ -1,0 +1,41 @@
+<head>
+  <title>Data vizualisation - Mathilde Laffon & Ivan Daum</title>
+  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Montserrat" rel="stylesheet">
+  <link href="css/main.css" rel="stylesheet" />
+  <script>
+  var DATA = []
+  // DATA.push({
+  //     title:'Couleur favorite',
+  //     color:'#FFFF00',
+  //     datas:['Rose']
+  // })
+  DATA.push({
+      title:'Couleur favorite',
+      color:'#FFFF00',
+      datas:['Rose','Rouge','Aucune','Aucune','Bleu','Aucune','Aucune','Rose','Bleu','Aucune','Bleu','Bleu','Bleu','Bleu','Bleu','Bleu','Bleu','Vert','Vert','Aucune','Bleu','Toutes','Jaune','Jaune','Rouge','Camel','Bleu','Bleu','Orange','Bleu','Fushia','Transparent','Bleu','Vert','Gris']
+  })
+  DATA.push({
+    title:'Lieu de résidence',
+    color:'#00FBE0',
+    datas:['Epinay-sur-Orge','Paris','Bussy-Saint-Georges','Paris','Paris','Paris','Paris','Argenteuil','Charenton','Bussy-Saint-Georges','Rosny-sous-Bois','levallois','Paris','Paris','Levallois','Noisy-le-Grand','Paris','Paris','Paris','Paris','Paris','Vitry','Paris','Noisy-le-Sec','Paris','Paris','Paris','Paris','Orly sur Morin','Paris','paris','Le Kremlin-Bicêtre','Paris','Paris','Châtenay-Malabry','Paris','Paris']
+  })
+  DATA.push({
+    title:'Animal favoris',
+    color:'#22FE16',
+    datas: ['Aucun','Chat','Chien','Lama','Chien','Chat','Aucun','Vache','Loup','Aucun','Chat','Chien','Chat','Poule','Éléphant','Ours','Chat','Chien','Éléphant','Renard','Paresseux','Aucun','Chien','Girafe','Chimpanzé','Chien','Lion','Chat','Chat','Chat','Chat','Chat','Tartigrade','Chatte','Chat','Chat','Aucun','Chat']
+  })
+  DATA.push({
+    title:'Année de naissance',
+    color:'#FB0001',
+    datas:['1994','1995','1996','1994','1993','1994','1995','1996','1994','1996','1996','1991','1993','1993','1994','1994','1994','1995','1995','1996','1995','1995','1995','1996','1994','1994','1995','1993','1996','1995','1993','1995','1994','1995','1996','1995','1996']
+  })
+  </script>
+</head>
+<body>
+  <div id="legend"></div>
+  <div id="app"></div>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script type="text/javascript" src="js/Circle.js"></script>
+  <script type="text/javascript" src="js/Category.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+</body>

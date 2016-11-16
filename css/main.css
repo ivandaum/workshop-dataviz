@@ -1,0 +1,44 @@
+body {
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  background:#05132b;
+  color:white;
+  font-family: 'Abril Fatface', cursive;
+  font-family: 'Montserrat', sans-serif;
+}
+#legend {
+  width:100%;
+  text-align:center;
+  position:absolute;
+  bottom:50px;
+  left:0;
+  right:0;
+}
+#legend p {
+  display:inline-block;
+  font-size:13px;
+  margin:0 20px;
+  text-transform: uppercase;
+}
+#legend p span {
+  z-index: 30;
+  height:30px;
+  position:relative;
+  display:block;
+  line-height:30px;
+  padding-left:20;
+  text-shadow:0 0 5px rgba(0,0,0,0.9);
+}
+#legend p .color {
+  display:block;
+  z-index:10;
+  position:absolute;
+  top:0;
+  margin:0;
+  padding:0;
+  border-radius:50%;
+  height:30px;
+  width:30px;
+}
