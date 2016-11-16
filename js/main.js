@@ -15,12 +15,10 @@ window.addEventListener('click',function(e){
       mouse.x = e.clientX
       mouse.y = e.clientY
     }
-
     var circle = getCircleOnMouse()
 
     if(!circle) return
 
-    console.log(circle.category)
 })
 
 window.addEventListener('mousemove',function(e) {
@@ -38,7 +36,7 @@ window.addEventListener('mousemove',function(e) {
 function getCircleOnMouse() {
   // mouse.x -= window.innerWidth / 2
   // mouse.y -= window.innerHeight / 2
-  
+
   for(var b=0;b<CATEGORIES.length;b++) {
     var circles = CATEGORIES[b].datas
 

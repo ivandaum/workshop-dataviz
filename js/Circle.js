@@ -9,7 +9,7 @@ var Circle = function(param) {
   this.sizeRatio = 0.3
   this.easing = random(0.1,1)
   this.rotate = 0
-  this.progressiveRotate = 0.1
+  this.progressiveRotate = 10
 }
 
 Circle.prototype.updateWithStats = function() {
@@ -40,19 +40,20 @@ Circle.prototype.updateWithStats = function() {
     }
 
     this.position = this.initPosition
+    this.easing = this.size / 100
     this.size = this.percent * this.sizeRatio
-    this.easing = Math.log(this.size)
-
     this.hoverSize = this.size * 2
     this.initSize = this.size
+
 }
 
 Circle.prototype.update = function() {
-  this.progressiveRotate -= 0.001
+  var minimum = 0.3
+  this.progressiveRotate += (minimum - this.progressiveRotate ) * this.easing
 
-  if(this.progressiveRotate <= 0.001) this.progressiveRotate = 0.001
+  if(this.progressiveRotate <= minimum) this.progressiveRotate = minimum
 
-  this.rotate += (this.number * this.progressiveRotate) * this.easing
+  this.rotate += (this.progressiveRotate * this.number) * this.easing
 
   if(this.rotate == 360) this.rotate = 0
 
@@ -63,6 +64,7 @@ Circle.prototype.update = function() {
 
   this.position.x += window.innerWidth / 2
   this.position.y += window.innerHeight / 2
+
 
   if(this.position.x < this.rayon) {
       this.position.x += this.variation.x
