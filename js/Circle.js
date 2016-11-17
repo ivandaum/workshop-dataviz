@@ -6,7 +6,7 @@ var Circle = function(param) {
   this.size = 10
   this.position = {}
   this.initPosition = {}
-  this.sizeRatio = 2.5
+  this.sizeRatio = 1.5
   this.easing = random(0.1,1)
   this.rotate = 0
   this.initVariation = {x:0,y:0}
@@ -26,13 +26,12 @@ Circle.prototype.updateWithStats = function() {
 
     this.variationValue = 100
 
-    var initVariation = {
+    this.initVariation = {
       x:random(this.number - this.variationValue, this.number + this.variationValue),
       y:random(this.number - this.variationValue, this.number + this.variationValue)
     }
 
-    this.variation = {x:initVariation.x,y:initVariation.y}
-    this.initVariation = initVariation
+    this.variation = {x:this.initVariation.x,y:this.initVariation.y}
 
     if(this.initPosition.x < this.rayon) {
         this.initPosition.x += this.initVariation.x
@@ -51,26 +50,42 @@ Circle.prototype.updateWithStats = function() {
     this.size *= this.sizeRatio * this.percent / 100
     this.hoverSize = this.size * 2
     this.initSize = this.size
+
+    this.activeRotate = this.differentsValue.current + (this.number * 0.015)
+    this.valuesLength = 360
 }
 
 Circle.prototype.update = function() {
-  var minimum = 0.1
-  this.progressiveRotate += (minimum - this.progressiveRotate ) * this.easing
 
-  if(this.progressiveRotate <= minimum) this.progressiveRotate = minimum
+  // Point rotation
 
-  this.rotate += (this.progressiveRotate * this.number) * this.easing
-
-  if(this.rotate == 360) this.rotate = 0
-
+  // R GLOBAL
   if(activeCategory != false) {
     this.endRadius = activeCategory.title == this.category.title ? activeCategoryR : reductedR
   } else {
     this.endRadius = globalR
   }
 
+  // POSITION WITH EASING
+  var minimum = 0.1
+
+  this.progressiveRotate += (minimum - this.progressiveRotate ) * this.easing
+
+  if(this.progressiveRotate <= minimum) this.progressiveRotate = minimum
+
+
+  if(this.category.isActive() == true) {
+    this.rotate = this.activeRotate - activeRotateVariation
+    this.valuesLength += (this.differentsValue.count - this.valuesLength) * 0.1
+  } else {
+    this.valuesLength += (360 - this.valuesLength) * 0.001
+    this.rotate += (this.progressiveRotate * this.number) * this.easing
+  }
+
+  if(this.rotate == 360) this.rotate = 0
+
   this.radius += (this.endRadius - this.radius) * 0.1
-  var points = circlePoint(this.radius,this.rotate,360)
+  var points = circlePoint(this.radius,this.rotate,this.valuesLength)
 
   this.position.x = points.x
   this.position.y = points.y
@@ -78,17 +93,16 @@ Circle.prototype.update = function() {
   this.position.x += window.innerWidth / 2
   this.position.y += window.innerHeight / 2
 
-
+  // Variations between points (prevent makign a perfect circle)
   if(this.category.isActive() == true) {
     this.variation.x += (this.activeVariation.x - this.variation.x) * 0.3
     this.variation.y += (this.activeVariation.x - this.variation.y) * 0.3
-
   } else {
     this.variation.x += (this.initVariation.x - this.variation.x) * 0.1
     this.variation.y += (this.initVariation.y - this.variation.y) * 0.1
-
   }
 
+  // Variation for each blocs
   if(this.position.x < this.rayon) {
       this.position.x += this.variation.x
   } else {
@@ -101,11 +115,15 @@ Circle.prototype.update = function() {
     this.position.y -= this.variation.y
   }
 
-  if(mouse.x >= this.position.x - this.hoverSize && mouse.x <= this.position.x + this.hoverSize
-  && mouse.y >= this.position.y - this.hoverSize && mouse.y <= this.position.y + this.hoverSize) {
-    this.size += (this.hoverSize - this.size) * 0.2
+  if(this.category.isActive() != true) {
+    if(mouse.x >= this.position.x - this.hoverSize && mouse.x <= this.position.x + this.hoverSize
+    && mouse.y >= this.position.y - this.hoverSize && mouse.y <= this.position.y + this.hoverSize) {
+      this.size += (this.hoverSize - this.size) * 0.2
+    } else {
+      this.size += (this.initSize - this.size) * 0.2
+    }
   } else {
-    this.size += (this.initSize - this.size) * 0.2
+      this.size += (this.initSize - this.size) * 0.2
   }
 
   this.draw()
@@ -119,5 +137,12 @@ Circle.prototype.draw = function() {
   ctx.arc(this.position.x,this.position.y,this.size,0,Math.PI * 2)
   ctx.fill()
   ctx.closePath()
+
+
+  // ctx.beginPath()
+  // ctx.fillStyle = '#fff'
+  // ctx.font="20px Arial";
+  // ctx.fillText(this.percent,this.position.x + this.size,this.position.y + this.size)
+  // ctx.fill()
   ctx.restore()
 }

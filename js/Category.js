@@ -17,6 +17,7 @@ var Category = function(param) {
 
   this.datas = datas
   this.setCirclesStats()
+  this.regroupSameCircles()
 }
 
 Category.prototype.isActive = function() {
@@ -25,6 +26,42 @@ Category.prototype.isActive = function() {
   if(activeCategory.title == this.title) return true
 
   return false
+}
+Category.prototype.regroupSameCircles = function() {
+  var circles = this.datas
+  var regrouped = []
+  var percent = 0
+  var percentsArray = []
+
+  for(var a =0; a<circles.length; a ++) {
+      var circle = this.datas[a]
+      if(circle.percent <= 10) {
+          percent += circle.percent
+      }
+
+  }
+
+  percent = percent * 100
+  percent = Math.round(percent)
+  percent = percent / 100
+
+  for(var a =0; a<circles.length; a ++) {
+      if(this.datas[a].percent <= 10) {
+          this.datas[a].percent = percent
+      }
+
+      if(percentsArray.indexOf(this.datas[a].percent) == -1) {
+        percentsArray.push(this.datas[a].percent)
+      }
+  }
+
+  for(var z =0;z<circles.length;z++) {
+    this.datas[z].differentsValue = {
+      current:percentsArray.indexOf(this.datas[z].percent),
+      count:percentsArray.length
+    }
+    this.datas[z].updateWithStats()
+  }
 }
 
 Category.prototype.setCirclesStats = function() {
@@ -45,6 +82,8 @@ Category.prototype.setCirclesStats = function() {
       count++
   }
 
+  this.stats = values
+
   for(var e=0;e<circles.length; e++) {
     for (value in values) {
       var ind = values[value]
@@ -52,13 +91,13 @@ Category.prototype.setCirclesStats = function() {
       if(circles[e].value != value) continue
 
       var percent = ind * 100 / count
+
       percent = percent * 100
       percent = Math.round(percent)
       percent = percent / 100
 
-      this.datas[e].count = ind
       this.datas[e].percent = percent
-      this.datas[e].updateWithStats()
+
     }
   }
 }

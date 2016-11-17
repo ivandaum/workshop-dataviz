@@ -38,6 +38,8 @@ window.addEventListener('mousemove',function(e) {
 
 })
 
+var activeRotateVariation = 0
+
 function getCircleOnMouse() {
 
   for(var b=0;b<CATEGORIES.length;b++) {
@@ -84,6 +86,9 @@ for(var x=0;x<DATA.length;x++) {
 }
 
 function frame() {
+  activeRotateVariation += 0.001
+
+  if(activeRotateVariation == 36) activeRotateVariation = 0
 
   requestAnimationFrame(frame)
   ctx.clearRect(0,0,window.innerWidth,window.innerHeight)
