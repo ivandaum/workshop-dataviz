@@ -3,7 +3,7 @@ var Circle = function(param) {
   this.category = param.category
   this.number = param.number
   this.color = param.color
-  this.size = 12
+  this.size = 10
   this.position = {}
   this.initPosition = {}
   this.sizeRatio = 1.5
@@ -12,6 +12,14 @@ var Circle = function(param) {
   this.initVariation = {x:0,y:0}
   this.activeVariation = {x:0.1,y:0.1}
   this.progressiveRotate = 10
+  this.lanePoints = {
+    x:0,
+    y:0
+  }
+  this.textPoints = {
+    x:0,
+    y:0
+  }
 }
 
 Circle.prototype.updateWithStats = function() {
@@ -47,12 +55,13 @@ Circle.prototype.updateWithStats = function() {
 
     this.position = this.initPosition
     this.easing = this.size / 100
-    this.size *= this.sizeRatio * this.percent / 100
+    this.size *= this.sizeRatio * this.percent / 70
     this.hoverSize = this.size * 2
     this.initSize = this.size
 
     this.activeRotate = this.differentsValue.current + (this.number * 0.015)
     this.valuesLength = 360
+    this.activeRotateVariation = 0
 }
 
 Circle.prototype.update = function() {
@@ -75,8 +84,10 @@ Circle.prototype.update = function() {
 
 
   if(this.category.isActive() == true) {
-    this.rotate = this.activeRotate - activeRotateVariation
+    this.activeRotateVariation += 0.001
+    this.rotate = this.activeRotate - this.activeRotateVariation
     this.valuesLength += (this.differentsValue.count - this.valuesLength) * 0.1
+    if(this.activeRotateVariation >= this.valuesLength) this.activeRotateVariation = 0
 
   } else {
     this.valuesLength += (360 - this.valuesLength) * 0.001
@@ -87,12 +98,26 @@ Circle.prototype.update = function() {
 
   this.radius += (this.endRadius - this.radius) * 0.1
   var points = circlePoint(this.radius,this.rotate,this.valuesLength)
+  var lanePoints = circlePoint(this.radius * 1.1, this.rotate,this.valuesLength)
+  var textPoints = circlePoint(this.radius * 1.2, this.rotate,this.valuesLength)
 
   this.position.x = points.x
   this.position.y = points.y
 
   this.position.x += window.innerWidth / 2
   this.position.y += window.innerHeight / 2
+
+  this.lanePoints.x = lanePoints.x
+  this.lanePoints.y = lanePoints.y
+
+  this.lanePoints.x += window.innerWidth / 2
+  this.lanePoints.y += window.innerHeight / 2
+
+  this.textPoints.x = textPoints.x
+  this.textPoints.y = textPoints.y
+
+  this.textPoints.x += window.innerWidth / 2
+  this.textPoints.y += window.innerHeight / 2
 
   // Variations between points (prevent makign a perfect circle)
   if(this.category.isActive() == true) {

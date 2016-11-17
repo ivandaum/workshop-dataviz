@@ -7,6 +7,8 @@ var Category = function(param) {
   datas = []
   var currentCategory = this
 
+  this.intensity = 0
+
   param.datas.forEach(function(data,number) {
     var circle = new Circle({
       value:data,
@@ -113,7 +115,7 @@ Category.prototype.showPercents = function() {
   var infosPosition = []
   var positionCount = 0
   var infoCount = 0
-
+  var textPoints = []
   for(var a =0; a<this.datas.length;a++) {
     var percent = this.datas[a].percent
 
@@ -131,7 +133,12 @@ Category.prototype.showPercents = function() {
         infosPosition[percent] = []
     }
 
-    infosPosition[percent].push(this.datas[a].position)
+    if(typeof textPoints[percent] == 'undefined') {
+        textPoints[percent] = []
+    }
+
+    infosPosition[percent].push(this.datas[a].lanePoints)
+    textPoints[percent].push(this.datas[a].textPoints)
     positionCount++
   }
 
@@ -141,14 +148,41 @@ Category.prototype.showPercents = function() {
     var currentPercent = infosPosition[cInfo]
 
     // FIRST TITLE
-    position.x = currentPercent[0].x
-    position.y = currentPercent[0].y
+
+    textPoints.x =  textPoints[cInfo][Math.ceil(currentPercent.length /2)].x,
+    textPoints.y = textPoints[cInfo][Math.ceil(currentPercent.length /2)].y,
 
     ctx.beginPath()
-    ctx.fillStyle = '#fff'
-    ctx.font="50px Abril Fatface"
-    ctx.fillText(cInfo + '%',position.x,position.y)
+    ctx.strokeStyle = this.color
+    ctx.lineWidth = 3
+    ctx.moveTo(currentPercent[0].x,currentPercent[0].y)
+
+    for(var n=0;n<currentPercent.length;n++) {
+      var x = currentPercent[n].x
+      var y = currentPercent[n].y
+
+      if(typeof currentPercent[n+1] != 'undefined') {
+        var nextX =  (x + currentPercent[n+1].x ) / 2
+        var nextY =  (y + currentPercent[n+1].y ) / 2
+        ctx.quadraticCurveTo(x,y,nextX,nextY)
+      }
+    }
+
+    ctx.stroke()
+    ctx.closePath()
+
+    ctx.beginPath()
+    ctx.fillStyle = '#05132b'
+    ctx.strokeStyle = 'rgba(255,255,255,' + this.intensity +')'
+    ctx.lineWidth = 1
+
+    var fontSize = 1.2 * cInfo
+    fontSize = fontSize < 30 ? 30 : fontSize
+    ctx.font = fontSize +"px Abril Fatface"
+    ctx.fillText(cInfo + '%',textPoints.x,textPoints.y)
+    ctx.strokeText(cInfo + '%',textPoints.x,textPoints.y)
     ctx.fill()
+    ctx.stroke()
     ctx.closePath()
 
     var y = 0
@@ -175,10 +209,10 @@ Category.prototype.showPercents = function() {
         lane = (x >= infos[cInfo].length - 1) ? lane.slice(0,-2) : lane
 
         ctx.beginPath()
-        ctx.fillStyle = '#fff'
-        ctx.strokeStyle = 'red'
+        ctx.fillStyle = 'rgba(255,255,255,' + this.intensity +')'
+        //ctx.strokeStyle = '#05132b'
         ctx.font="15px Montserrat"
-        ctx.fillText(lane,position.x,position.y + (20 * (y+1)))
+        ctx.fillText(lane,textPoints.x,textPoints.y + 5 + (25 * (y+1)))
         ctx.fill()
         ctx.closePath()
         y++
@@ -190,10 +224,23 @@ Category.prototype.showPercents = function() {
 }
 
 Category.prototype.show = function() {
-  if(this.isActive()) {
-    this.showPercents()
-  }
   this.drawCircles()
+
+  if(this.isActive()) {
+    this.intensity += 0.05
+
+    if(this.intensity >= 1) {
+      this.intensity = 1
+    }
+
+    this.showPercents()
+  } else {
+    this.intensity -= 0.01
+    if(this.intensity <= 0) {
+      this.intensity = 0
+    }
+
+  }
 }
 
 Category.prototype.writeTitle = function() {
