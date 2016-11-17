@@ -149,8 +149,13 @@ Category.prototype.showPercents = function() {
 
     // FIRST TITLE
 
-    textPoints.x =  textPoints[cInfo][Math.ceil(currentPercent.length /2)].x,
-    textPoints.y = textPoints[cInfo][Math.ceil(currentPercent.length /2)].y,
+    if(currentPercent.length > 1) {
+      textPoints.x = textPoints[cInfo][Math.ceil(currentPercent.length /2)].x
+      textPoints.y = textPoints[cInfo][Math.ceil(currentPercent.length /2)].y
+    } else {
+      textPoints.x = textPoints[cInfo][0].x
+      textPoints.y = textPoints[cInfo][0].y
+    }
 
     ctx.beginPath()
     ctx.strokeStyle = this.color
