@@ -39,8 +39,6 @@ window.addEventListener('mousemove',function(e) {
 })
 
 function getCircleOnMouse() {
-  // mouse.x -= window.innerWidth / 2
-  // mouse.y -= window.innerHeight / 2
 
   for(var b=0;b<CATEGORIES.length;b++) {
     var circles = CATEGORIES[b].datas

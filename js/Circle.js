@@ -26,23 +26,24 @@ Circle.prototype.updateWithStats = function() {
 
     this.variationValue = 100
 
-    this.variation = {
+    var initVariation = {
       x:random(this.number - this.variationValue, this.number + this.variationValue),
       y:random(this.number - this.variationValue, this.number + this.variationValue)
     }
 
-    this.initVariation = this.variation
+    this.variation = {x:initVariation.x,y:initVariation.y}
+    this.initVariation = initVariation
 
     if(this.initPosition.x < this.rayon) {
-        this.initPosition.x += this.variation.x
+        this.initPosition.x += this.initVariation.x
     } else {
-      this.initPosition.x -= this.variation.x
+      this.initPosition.x -= this.initVariation.x
     }
 
     if(this.initPosition.y < this.rayon) {
-      this.initPosition.y += this.variation.y
+      this.initPosition.y += this.initVariation.y
     } else {
-      this.initPosition.y -= this.variation.y
+      this.initPosition.y -= this.initVariation.y
     }
 
     this.position = this.initPosition
@@ -50,7 +51,6 @@ Circle.prototype.updateWithStats = function() {
     this.size *= this.sizeRatio * this.percent / 100
     this.hoverSize = this.size * 2
     this.initSize = this.size
-
 }
 
 Circle.prototype.update = function() {
@@ -78,39 +78,16 @@ Circle.prototype.update = function() {
   this.position.x += window.innerWidth / 2
   this.position.y += window.innerHeight / 2
 
+
   if(this.category.isActive() == true) {
-    return this.draw()
     this.variation.x += (this.activeVariation.x - this.variation.x) * 0.3
     this.variation.y += (this.activeVariation.x - this.variation.y) * 0.3
 
-    //return this.draw()
   } else {
-    // this.variation.x += (this.initVariation.x - this.variation.x) * 100
-    // this.variation.y += (this.initVariation.y - this.variation.y) * 100
-    // this.variation.x = this.initVariation.x
-    // this.variation.y = this.initVariation.y
-    //
-    //
-    // if(this.category.title = 'Couleur favorite' && this.number == 2) {
-    //   console.log(this.initVariation)
-    // }
+    this.variation.x += (this.initVariation.x - this.variation.x) * 0.1
+    this.variation.y += (this.initVariation.y - this.variation.y) * 0.1
 
-    if(this.variation >= this.initVariation.x) {
-
-    }
   }
-  // else {
-    //
-    // this.variation.x += this.initVariation.x * 0.3
-    // this.variation.y += this.initVariation.y * 0.3
-    //
-    // if(this.variation >= this.initVariation.x) {
-    //   this.variation.x = this.initVariation.x
-    //   this.variation.y = this.initVariation.y
-    // }
-    //
-    // this.variation = this.initVariation
-  // }
 
   if(this.position.x < this.rayon) {
       this.position.x += this.variation.x
