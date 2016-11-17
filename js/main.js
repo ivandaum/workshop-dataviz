@@ -11,6 +11,7 @@ var mouse = {x:0,y:0}
 var ROTATE = 0
 var TIMMING = 0
 var activeCategory = false
+var TEST = 0
 
 window.addEventListener('click',function(e){
     if(e.clientX) {

@@ -48,7 +48,6 @@ Category.prototype.regroupSameCircles = function() {
   percent = Math.round(percent)
   percent = percent / 10
 
-
   for(var a=0; a<circles.length; a ++) {
       if(this.datas[a].percent <= this.regroupIfMinPercent) {
           this.datas[a].percent = percent
@@ -58,12 +57,13 @@ Category.prototype.regroupSameCircles = function() {
         this.percentsArray.push(this.datas[a].percent)
       }
   }
-
   for(var z = 0;z<circles.length;z++) {
+
     this.datas[z].differentsValue = {
       current:this.percentsArray.indexOf(this.datas[z].percent),
       count:this.percentsArray.length
     }
+
     this.datas[z].updateWithStats()
   }
 
@@ -108,27 +108,84 @@ Category.prototype.setCirclesStats = function() {
 }
 
 Category.prototype.showPercents = function() {
-    var percentsValues = []
 
-    for(var a = 0; a<this.percentsArray.length;a++) {
-        var position = circlePoint(activeCategoryR,a,this.percentsArray.length)
+  var infos = []
+  var infosPosition = []
+  var positionCount = 0
+  var infoCount = 0
 
-        var sizePercent = this.percentsArray[a] / 0.8
-        position.x += window.innerWidth / 2
-        position.y += window.innerHeight / 2
+  for(var a =0; a<this.datas.length;a++) {
+    var percent = this.datas[a].percent
+
+    if(typeof infos[percent] == 'undefined') {
+      infos[percent] = []
+    }
+
+    if (infos[percent].indexOf(this.datas[a]) == -1) {
+        infos[percent].push(this.datas[a].value)
+        infoCount++
+
+    }
+
+    if(typeof infosPosition[percent] == 'undefined') {
+        infosPosition[percent] = []
+    }
+
+    infosPosition[percent].push(this.datas[a].position)
+    positionCount++
+  }
+
+  for(cInfo in infos) {
+    var usedVar = []
+    var position = {x:0,y:0}
+    var currentPercent = infosPosition[cInfo]
+
+    // FIRST TITLE
+    position.x = currentPercent[0].x
+    position.y = currentPercent[0].y
+
+    ctx.beginPath()
+    ctx.fillStyle = '#fff'
+    ctx.font="50px Abril Fatface"
+    ctx.fillText(cInfo + '%',position.x,position.y)
+    ctx.fill()
+    ctx.closePath()
+
+    var y = 0
+    var canDraw = false
+    var lane = ''
+    var countWords = 1
+    for(var x=0;x<infos[cInfo].length;x++) {
+      var text = infos[cInfo][x]
+
+      if(typeof infos[cInfo][x-1] == 'undefined') {
+        usedVar.push(text)
+      } else if (usedVar.indexOf(text) == -1) {
+          usedVar.push(text)
+      } else {
+        text = false
+      }
+
+      if(text) {
+          lane += text + ', '
+          canDraw = countWords % 3 == 0 ? true : false
+          countWords++
+      }
+      if(canDraw && lane != false || x >= infos[cInfo].length - 1 && lane != false ) {
+        lane = (x >= infos[cInfo].length - 1) ? lane.slice(0,-2) : lane
+
         ctx.beginPath()
-        ctx.strokeStyle = '#fff'
         ctx.fillStyle = '#fff'
-        ctx.lineWidth = 5
-        ctx.font="20px Abril Fatface";
-        ctx.fillText(this.percentsArray[a] + '%',position.x,position.y)
-        ctx.stroke()
+        ctx.strokeStyle = 'red'
+        ctx.font="15px Montserrat"
+        ctx.fillText(lane,position.x,position.y + (20 * (y+1)))
+        ctx.fill()
         ctx.closePath()
+        y++
+        lane = ''
+      }
     }
-
-    for(var q = 0; q<this.datas.length;q++) {
-        
-    }
+  }
 
 }
 

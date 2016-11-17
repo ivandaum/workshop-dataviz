@@ -117,7 +117,7 @@ Circle.prototype.update = function() {
   }
 
   if(this.category.isActive()) {
-    if(this.differentsValue.current = 0 || this.differentsValue.current == this.differentsValue.count -1) {
+    if(this.differentsValue.current == 0 || this.differentsValue.current == this.differentsValue.count -1) {
         this.category.textPosition.push([this.position.x,this.position.y])
     }
   }
@@ -147,8 +147,8 @@ Circle.prototype.draw = function() {
 
   // ctx.beginPath()
   // ctx.fillStyle = '#fff'
-  // ctx.font="10px Arial";
-  // ctx.fillText(this.percent,this.position.x + this.size,this.position.y + this.size)
+  // ctx.font="15px Abril Fatface"
+  // ctx.fillText(this.percent + '% ' + this.value,this.position.x + this.size,this.position.y + this.size)
   // ctx.fill()
   // ctx.closePath()
 
