@@ -3,7 +3,7 @@ var Circle = function(param) {
   this.category = param.category
   this.number = param.number
   this.color = param.color
-  this.size = 10
+  this.size = 12
   this.position = {}
   this.initPosition = {}
   this.sizeRatio = 1.5
@@ -77,6 +77,7 @@ Circle.prototype.update = function() {
   if(this.category.isActive() == true) {
     this.rotate = this.activeRotate - activeRotateVariation
     this.valuesLength += (this.differentsValue.count - this.valuesLength) * 0.1
+
   } else {
     this.valuesLength += (360 - this.valuesLength) * 0.001
     this.rotate += (this.progressiveRotate * this.number) * this.easing
@@ -115,6 +116,12 @@ Circle.prototype.update = function() {
     this.position.y -= this.variation.y
   }
 
+  if(this.category.isActive()) {
+    if(this.differentsValue.current = 0 || this.differentsValue.current == this.differentsValue.count -1) {
+        this.category.textPosition.push([this.position.x,this.position.y])
+    }
+  }
+
   if(this.category.isActive() != true) {
     if(mouse.x >= this.position.x - this.hoverSize && mouse.x <= this.position.x + this.hoverSize
     && mouse.y >= this.position.y - this.hoverSize && mouse.y <= this.position.y + this.hoverSize) {
@@ -138,11 +145,12 @@ Circle.prototype.draw = function() {
   ctx.fill()
   ctx.closePath()
 
-
   // ctx.beginPath()
   // ctx.fillStyle = '#fff'
-  // ctx.font="20px Arial";
+  // ctx.font="10px Arial";
   // ctx.fillText(this.percent,this.position.x + this.size,this.position.y + this.size)
   // ctx.fill()
+  // ctx.closePath()
+
   ctx.restore()
 }

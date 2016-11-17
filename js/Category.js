@@ -2,6 +2,8 @@ var Category = function(param) {
   this.color = param.color
   this.title = param.title
   this.number = param.number
+  this.regroupIfMinPercent = 10
+  this.textPosition = []
   datas = []
   var currentCategory = this
 
@@ -28,40 +30,43 @@ Category.prototype.isActive = function() {
   return false
 }
 Category.prototype.regroupSameCircles = function() {
+
   var circles = this.datas
   var regrouped = []
   var percent = 0
-  var percentsArray = []
+  this.percentsArray = []
 
   for(var a =0; a<circles.length; a ++) {
       var circle = this.datas[a]
-      if(circle.percent <= 10) {
-          percent += circle.percent
-      }
 
+      if(circle.percent <= this.regroupIfMinPercent) {
+        percent += (circle.percent / this.stats[circle.value])
+      }
   }
 
-  percent = percent * 100
+  percent = percent * 10
   percent = Math.round(percent)
-  percent = percent / 100
+  percent = percent / 10
 
-  for(var a =0; a<circles.length; a ++) {
-      if(this.datas[a].percent <= 10) {
+
+  for(var a=0; a<circles.length; a ++) {
+      if(this.datas[a].percent <= this.regroupIfMinPercent) {
           this.datas[a].percent = percent
       }
 
-      if(percentsArray.indexOf(this.datas[a].percent) == -1) {
-        percentsArray.push(this.datas[a].percent)
+      if(this.percentsArray.indexOf(this.datas[a].percent) == -1) {
+        this.percentsArray.push(this.datas[a].percent)
       }
   }
 
-  for(var z =0;z<circles.length;z++) {
+  for(var z = 0;z<circles.length;z++) {
     this.datas[z].differentsValue = {
-      current:percentsArray.indexOf(this.datas[z].percent),
-      count:percentsArray.length
+      current:this.percentsArray.indexOf(this.datas[z].percent),
+      count:this.percentsArray.length
     }
     this.datas[z].updateWithStats()
   }
+
 }
 
 Category.prototype.setCirclesStats = function() {
@@ -90,19 +95,47 @@ Category.prototype.setCirclesStats = function() {
 
       if(circles[e].value != value) continue
 
-      var percent = ind * 100 / count
+      var percent = (ind * 100) / count
 
-      percent = percent * 100
+      percent = percent * 10
       percent = Math.round(percent)
-      percent = percent / 100
+      percent = percent / 10
 
       this.datas[e].percent = percent
-
     }
   }
+
+}
+
+Category.prototype.showPercents = function() {
+    var percentsValues = []
+
+    for(var a = 0; a<this.percentsArray.length;a++) {
+        var position = circlePoint(activeCategoryR,a,this.percentsArray.length)
+
+        var sizePercent = this.percentsArray[a] / 0.8
+        position.x += window.innerWidth / 2
+        position.y += window.innerHeight / 2
+        ctx.beginPath()
+        ctx.strokeStyle = '#fff'
+        ctx.fillStyle = '#fff'
+        ctx.lineWidth = 5
+        ctx.font="20px Abril Fatface";
+        ctx.fillText(this.percentsArray[a] + '%',position.x,position.y)
+        ctx.stroke()
+        ctx.closePath()
+    }
+
+    for(var q = 0; q<this.datas.length;q++) {
+        
+    }
+
 }
 
 Category.prototype.show = function() {
+  if(this.isActive()) {
+    this.showPercents()
+  }
   this.drawCircles()
 }
 

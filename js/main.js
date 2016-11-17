@@ -88,7 +88,7 @@ for(var x=0;x<DATA.length;x++) {
 function frame() {
   activeRotateVariation += 0.001
 
-  if(activeRotateVariation == 36) activeRotateVariation = 0
+  if(activeRotateVariation == 0.360) activeRotateVariation = 0
 
   requestAnimationFrame(frame)
   ctx.clearRect(0,0,window.innerWidth,window.innerHeight)
