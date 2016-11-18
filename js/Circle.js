@@ -63,6 +63,7 @@ Circle.prototype.updateWithStats = function() {
     this.activeRotate = this.differentsValue.current + (this.number * 0.015)
     this.valuesLength = 360
     this.activeRotateVariation = 0
+
 }
 
 Circle.prototype.update = function() {

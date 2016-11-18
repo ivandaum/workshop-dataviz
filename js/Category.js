@@ -159,7 +159,7 @@ Category.prototype.showPercents = function() {
 
     ctx.beginPath()
     ctx.strokeStyle = this.color
-    ctx.lineWidth = 3
+    ctx.lineWidth = 2
     ctx.moveTo(currentPercent[0].x,currentPercent[0].y)
 
     for(var n=0;n<currentPercent.length;n++) {
@@ -184,8 +184,10 @@ Category.prototype.showPercents = function() {
     var fontSize = 1.2 * cInfo
     fontSize = fontSize < 30 ? 30 : fontSize
     ctx.font = fontSize +"px Abril Fatface"
-    ctx.fillText(cInfo + '%',textPoints.x,textPoints.y)
-    ctx.strokeText(cInfo + '%',textPoints.x,textPoints.y)
+
+    var percentWritten = Math.floor(cInfo)
+    ctx.fillText(percentWritten + '%',textPoints.x,textPoints.y)
+    ctx.strokeText(percentWritten + '%',textPoints.x,textPoints.y)
     ctx.fill()
     ctx.stroke()
     ctx.closePath()
