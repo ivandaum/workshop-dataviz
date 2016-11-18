@@ -217,7 +217,7 @@ Category.prototype.showPercents = function() {
         ctx.fillStyle = 'rgba(255,255,255,' + this.intensity +')'
         //ctx.strokeStyle = '#05132b'
         ctx.font="13px Montserrat"
-        ctx.fillText(lane.toUpperCase(),textPoints.x,textPoints.y + 5 + (25 * (y+1)))
+        ctx.fillText(lane.toUpperCase(),textPoints.x,textPoints.y + 5 + (20 * (y+1)))
         ctx.fill()
         ctx.closePath()
         y++

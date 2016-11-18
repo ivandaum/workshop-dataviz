@@ -56,6 +56,7 @@ Circle.prototype.updateWithStats = function() {
     this.position = this.initPosition
     this.easing = this.size / 100
     this.size *= this.sizeRatio * this.percent / 70
+    if(this.size < 2) this.size = 2
     this.hoverSize = this.size * 2
     this.initSize = this.size
 
@@ -99,7 +100,7 @@ Circle.prototype.update = function() {
   this.radius += (this.endRadius - this.radius) * 0.1
   var points = circlePoint(this.radius,this.rotate,this.valuesLength)
   var lanePoints = circlePoint(this.radius * 1.1, this.rotate,this.valuesLength)
-  var textPoints = circlePoint(this.radius * 1.2, this.rotate,this.valuesLength)
+  var textPoints = circlePoint(this.radius * 1.3, this.rotate,this.valuesLength)
 
   this.position.x = points.x
   this.position.y = points.y
