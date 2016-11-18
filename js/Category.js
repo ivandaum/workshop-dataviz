@@ -2,7 +2,7 @@ var Category = function(param) {
   this.color = param.color
   this.title = param.title
   this.number = param.number
-  this.regroupIfMinPercent = 10
+  this.regroupIfMinPercent = 4
   this.textPosition = []
   datas = []
   var currentCategory = this
@@ -216,8 +216,8 @@ Category.prototype.showPercents = function() {
         ctx.beginPath()
         ctx.fillStyle = 'rgba(255,255,255,' + this.intensity +')'
         //ctx.strokeStyle = '#05132b'
-        ctx.font="15px Montserrat"
-        ctx.fillText(lane,textPoints.x,textPoints.y + 5 + (25 * (y+1)))
+        ctx.font="13px Montserrat"
+        ctx.fillText(lane.toUpperCase(),textPoints.x,textPoints.y + 5 + (25 * (y+1)))
         ctx.fill()
         ctx.closePath()
         y++
