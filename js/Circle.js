@@ -171,12 +171,5 @@ Circle.prototype.draw = function() {
   ctx.fill()
   ctx.closePath()
 
-  // ctx.beginPath()
-  // ctx.fillStyle = '#fff'
-  // ctx.font="15px Abril Fatface"
-  // ctx.fillText(this.percent + '% ' + this.value,this.position.x + this.size,this.position.y + this.size)
-  // ctx.fill()
-  // ctx.closePath()
-
   ctx.restore()
 }

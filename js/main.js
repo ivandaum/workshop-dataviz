@@ -20,10 +20,23 @@ window.addEventListener('click',function(e){
     }
     var circle = getCircleOnMouse()
 
+    var fullTitles = document.getElementsByClassName('full-title')
+
+    for(var a=0;a<fullTitles.length;a++) {
+      fullTitles[a].style.opacity = 0
+    }
+
     if(!circle) {
       activeCategory = false
+      document.getElementById('legend').style.opacity = 1
     } else {
+      document.getElementById('legend').style.opacity = 0
+
       activeCategory = circle.category
+
+      setTimeout(function() {
+        document.querySelector('.full-title[data-title="' + circle.category.title +'"]').style.opacity = 1
+      },400)
     }
 })
 

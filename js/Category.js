@@ -250,16 +250,26 @@ Category.prototype.show = function() {
 
 Category.prototype.writeTitle = function() {
   var p = document.createElement('p')
-  var span = document.createElement('span')
- text = document.createTextNode(this.title)
+  var titleSpan = document.createElement('span')
+  var colorSpan = document.createElement('span')
 
- var color = document.createElement('span')
- color.className += 'color'
- color.style.backgroundColor = this.color
- p.appendChild(span)
- p.appendChild(color)
- span.appendChild(text)
- var div = document.getElementById('legend').appendChild(p)
+  text = document.createTextNode(this.title)
+  titleSpan.appendChild(text)
+
+  colorSpan.className += 'color'
+  colorSpan.style.backgroundColor = this.color
+
+  p.appendChild(titleSpan)
+  p.appendChild(colorSpan)
+
+  document.getElementById('legend').appendChild(p)
+
+  var fullTitle = document.createElement('span')
+  fullTitle.className += 'full-title'
+  fullTitle.dataset.title = this.title
+  fullTitle.appendChild(document.createTextNode(this.title))
+  document.getElementById('full-titles').appendChild(fullTitle)
+
 }
 
 Category.prototype.drawCircles = function() {
